@@ -1,0 +1,41 @@
+name: Deploy to Hugging Face Spaces
+
+on:
+  workflow_dispatch:  # Allows manual triggering
+  push:
+    branches: [ main ]  # Trigger workflow on pushes to the main branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'  # Specify Python version
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pytest
+        run: pytest tests/  # Runs all tests in the 'tests' directory
+
+  deploy:
+    needs: test  # Ensures deployment runs only if tests pass
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Push to Hugging Face Hub
+        uses: huggingface/hub-actions/push@main
+        with:
+          token: ${{ secrets.HF_TOKEN }}  # Hugging Face Token (use GitHub secret for security)
+          repo_id: nandini0406/Project_5502  # Your Hugging Face username and Space name
+          branch: main  # The branch to deploy
