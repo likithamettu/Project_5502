@@ -37,5 +37,5 @@ jobs:
         uses: huggingface/hub-actions/push@main
         with:
           token: ${{ secrets.HF_TOKEN }}  # Hugging Face Token (use GitHub secret for security)
-          repo_id: nandini0406/Project_5502  # Your Hugging Face username and Space name
+          repo_id: likitha04/Project_5502  # Your Hugging Face username and Space name
           branch: main  # The branch to deploy
